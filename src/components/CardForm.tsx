@@ -38,6 +38,7 @@ function CardForm(){
 
     return (
         <>
+        <div className="container flex flex-col items-center mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[#f9f9f9]">
             <input
                 type="text"
                 placeholder="título"
@@ -59,7 +60,8 @@ function CardForm(){
                         onChange={newDate => setDate(newDate)}
                         displayFormat="DD/MM/YYYY"
                 />
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit} className="text-white m-4 bg-blue-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Submit</button>
+        </div>
         </>
     )
 }
