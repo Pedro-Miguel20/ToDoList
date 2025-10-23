@@ -38,7 +38,7 @@ function CardForm(){
 
     return (
         <>
-        <div className="container flex flex-col items-center mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[#f9f9f9]">
+        <div className="container flex flex-col items-center mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[whitesmoke]">
             <input
                 type="text"
                 placeholder="título"
