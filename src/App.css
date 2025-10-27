@@ -23,9 +23,8 @@
 
 #root {
   margin: 0 auto;
-  text-align: center;
   font-family: 'Roboto Mono Variable', sans-serif;
-  background-color: gainsboro;
+  background-color: white;
   height: 100vh;
 }
 

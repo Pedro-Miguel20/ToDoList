@@ -1,65 +1,91 @@
-import { useState } from "react";
-import Datepicker from "react-tailwindcss-datepicker";
+import { useState, useEffect } from "react";
 import supabase from "../supabaseClient";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 function CardForm(){
-    const [date, setDate] = useState({ startDate: new Date(), endDate: null })
-    const [description, setDescription] = useState("")
-    const [title, setTitle] = useState("")
+    const [datahora, setDataHora] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
+    const [descricao, setDescricao] = useState("")
+    const [titulo, setTitulo] = useState("")
+    const [userId, setUserId] = useState<number | null>(null)
+
+    useEffect(() => {
+        const getUserId = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                const { data: userData } = await supabase
+                    .from('usuarios')
+                    .select('id')
+                    .eq('email', user.email || '')
+                    .single();
+                if (userData) {
+                    setUserId(userData.id);
+                }
+            }
+        };
+        getUserId();
+    }, []);
 
 
-    const onHandleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
+    const onHandleTitulo = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitulo(event.target.value);
     };
 
-    const onHandleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDescription(event.target.value);
+    const onHandleDescricao = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDescricao(event.target.value);
     };
 
     const handleSubmit = async () => {
-        if (!date.startDate) return;
+        if (!datahora || !userId) {
+            alert("Por favor, aguarde o carregamento dos dados do usuário");
+            return;
+        }
 
-        const formattedDate = new Date(date.startDate).toISOString().split("T")[0];
+        const formattedDate = new Date(datahora).toISOString();
 
         const { error } = await supabase.from("todo").insert({
-            title: title,
-            description: description,
-            data_marcada: formattedDate,
-            horario: "21:59:34",
+            titulo: titulo,
+            descricao: descricao,
+            data_hora: formattedDate,
+            id_usuario: userId,
+            feito: false
         });
 
         if (error) console.error(error);
         else {
             alert("Todo inserido!");
-            setDescription("");
-            setDate({ startDate: new Date(), endDate: null });
+            setDescricao("");
+            setTitulo("");
+            setDataHora({ startDate: new Date(), endDate: null });
         }
     };
 
     return (
         <>
-        <div className="container flex flex-col items-center mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[whitesmoke]">
+        <div className="container flex flex-col mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[ghostwhite]">
             <input
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 placeholder="título"
-                onChange={onHandleTitle}
-                value={title}
+                onChange={onHandleTitulo}
+                value={titulo}
                 style={{ width: "100%", marginBottom: "10px", padding: "5px" }}
             />
             <input
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 placeholder="Descrição"
-                onChange={onHandleDescription}
-                value={description}
+                onChange={onHandleDescricao}
+                value={descricao}
                 style={{ width: "100%", marginBottom: "10px", padding: "5px" }}
             />
-                <Datepicker 
-                        asSingle={true}
-                        useRange={false}
-                        value={date} 
-                        onChange={newDate => setDate(newDate)}
-                        displayFormat="DD/MM/YYYY"
-                />
+                <div className="flex flex-row gap-4 mb-4">
+                    <DatePicker
+                    showTime
+                    value={datahora} 
+                    onChange={newDate => setDataHora(newDate)}
+                    />
+                </div>
             <button onClick={handleSubmit} className="text-white m-4 bg-blue-700 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900">Submit</button>
         </div>
         </>

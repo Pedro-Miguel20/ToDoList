@@ -1,13 +1,14 @@
 import { Route, NavLink } from "react-router-dom";
 
 
+
 function Header() {
   return (
     <header className="flex justify-between align-center p-4 bg-blue-700 text-white">
-      <h1>ToDo List</h1>
+      <NavLink to="/">Home</NavLink>
       <div className="flex gap-4">
-        <NavLink to="/">Home</NavLink>
         <NavLink to="/todo">Todo</NavLink>
+        <NavLink to="/register">Register</NavLink>
       </div>
     </header>
   );

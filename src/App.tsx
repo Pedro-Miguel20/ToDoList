@@ -1,21 +1,35 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Todo from './pages/Todo';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import "./App.css"
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Todo from "./pages/Todo";
+import './App.css';
+import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./components/LoginForm";
+
+
+const router = createBrowserRouter([
+  {
+    element: <MainLayout/>,
+    children: [
+      {path: "/", element: <Home/>},
+      {path: "/todo", element: <Todo/>}
+    ]
+  },
+  {
+    element: <AuthLayout/>,
+    children: [
+      {path: "/register", element: <RegisterForm/>},
+      {path: "/login", element: <LoginForm/>}
+    ]
+  },
+]);
 
 function App() {
-  return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/todo" element={<Todo />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
