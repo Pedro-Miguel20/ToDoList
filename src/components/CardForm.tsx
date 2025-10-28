@@ -64,7 +64,7 @@ function CardForm(){
         <>
         <div className="container flex flex-col mx-auto p-4 border border-gray-300 rounded-lg shadow-md bg-[ghostwhite]">
             <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-400"
                 type="text"
                 placeholder="título"
                 onChange={onHandleTitulo}
@@ -72,7 +72,7 @@ function CardForm(){
                 style={{ width: "100%", marginBottom: "10px", padding: "5px" }}
             />
             <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-400"
                 type="text"
                 placeholder="Descrição"
                 onChange={onHandleDescricao}

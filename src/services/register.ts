@@ -1,5 +1,6 @@
 import supabase from '../supabaseClient';
 import type { TablesInsert } from "../../database.types";
+import bcrypt from 'bcryptjs';
 
 export const adicionarUsuario = async (usuario: TablesInsert<'usuarios'>) => {
 
@@ -8,7 +9,7 @@ export const adicionarUsuario = async (usuario: TablesInsert<'usuarios'>) => {
     .from('usuarios')
     .select('email')
     .eq('email', usuario.email)
-    .single(); // retorna um único registro
+    .maybeSingle();
 
   if (selectError) throw selectError;
 
@@ -19,11 +20,24 @@ export const adicionarUsuario = async (usuario: TablesInsert<'usuarios'>) => {
   if (usuario.password.length < 6) {
     throw new Error('A senha deve ter pelo menos 6 caracteres');
   }
-  // 2️⃣ Se não existir, adiciona o usuário
+
+  // 2️⃣ Gera o hash da senha
+  const hashedPassword = await bcrypt.hash(usuario.password, 10); // 10 rounds
+
+  // 3️⃣ Insere o usuário no banco com senha criptografada
   const { data, error } = await supabase
     .from('usuarios')
-    .insert([usuario]);
-  if (error) throw error;
-    
+    .insert([
+      {
+        ...usuario,
+        password: hashedPassword, // salva o hash
+      }
+    ]);
+
+  if (error) {
+    console.error('Supabase insert error:', error);
+    throw error;
+  }
+
   return data;
 }
