@@ -1,9 +1,9 @@
-import CardForm from "../components/CardForm";
+import TodoForm from "../components/TodoForm";
 
 function todo() {
   return (
     <>
-        <CardForm />
+        <TodoForm />
     </>
   );
 }

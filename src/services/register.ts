@@ -1,42 +1,28 @@
 import supabase from '../supabaseClient';
-import type { TablesInsert } from "../../database.types";
-import bcrypt from 'bcryptjs';
 
-export const adicionarUsuario = async (usuario: TablesInsert<'usuarios'>) => {
+export const adicionarUsuario = async (email: string, password: string, nome: string) => {
+  const emailTrimmed = email?.trim();
+  if (!emailTrimmed) throw new Error("Informe um email válido");
 
-  // 1️⃣ Verifica se o email já existe
-  const { data: existingUser, error: selectError } = await supabase
-    .from('usuarios')
-    .select('email')
-    .eq('email', usuario.email)
-    .maybeSingle();
-
-  if (selectError) throw selectError;
-
-  if (existingUser) {
-    throw new Error('Email já cadastrado');
-  }
-
-  if (usuario.password.length < 6) {
+  if (password.length < 6) {
     throw new Error('A senha deve ter pelo menos 6 caracteres');
   }
 
-  // 2️⃣ Gera o hash da senha
-  const hashedPassword = await bcrypt.hash(usuario.password, 10); // 10 rounds
-
   // 3️⃣ Insere o usuário no banco com senha criptografada
-  const { data, error } = await supabase
-    .from('usuarios')
-    .insert([
-      {
-        ...usuario,
-        password: hashedPassword, // salva o hash
-      }
-    ]);
+  const { data, error } = await supabase.auth.signUp({
+    email: emailTrimmed,   // <- email na raiz
+    password,
+    options: {
+      data: { nome }        // metadados extras
+    }
+  });
 
   if (error) {
     console.error('Supabase insert error:', error);
     throw error;
+  } else {
+    alert('Usuário cadastrado com sucesso!');
+    window.location.href = "/login";
   }
 
   return data;

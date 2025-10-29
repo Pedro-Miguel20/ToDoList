@@ -1,5 +1,3 @@
-import { loginUser } from "../services/login";
-
 function Home() {
   return (
       <>

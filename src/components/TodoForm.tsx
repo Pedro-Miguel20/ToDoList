@@ -3,30 +3,10 @@ import supabase from "../supabaseClient";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
-function CardForm(){
+function TodoForm(){
     const [datahora, setDataHora] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
     const [descricao, setDescricao] = useState("")
-    const [titulo, setTitulo] = useState("")
-    const [userId, setUserId] = useState<number | null>(null)
-
-    useEffect(() => {
-        const getUserId = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { data: userData } = await supabase
-                    .from('usuarios')
-                    .select('id')
-                    .eq('email', user.email || '')
-                    .single();
-                if (userData) {
-                    setUserId(userData.id);
-                }
-            }
-        };
-        getUserId();
-    }, []);
-
-
+    const [titulo, setTitulo] = useState("");
     const onHandleTitulo = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitulo(event.target.value);
     };
@@ -36,19 +16,13 @@ function CardForm(){
     };
 
     const handleSubmit = async () => {
-        if (!datahora || !userId) {
-            alert("Por favor, aguarde o carregamento dos dados do usuário");
-            return;
-        }
-
         const formattedDate = new Date(datahora).toISOString();
-
+        if(localStorage.getItem("user")) {
         const { error } = await supabase.from("todo").insert({
-            titulo: titulo,
-            descricao: descricao,
-            data_hora: formattedDate,
-            id_usuario: userId,
-            feito: false
+            title: titulo,
+            description: descricao,
+            date_time: formattedDate,
+            concluded: false
         });
 
         if (error) console.error(error);
@@ -57,6 +31,7 @@ function CardForm(){
             setDescricao("");
             setTitulo("");
             setDataHora({ startDate: new Date(), endDate: null });
+        }
         }
     };
 
@@ -92,4 +67,4 @@ function CardForm(){
     )
 }
 
-export default CardForm;
+export default TodoForm;
