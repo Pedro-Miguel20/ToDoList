@@ -1,37 +1,32 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "../supabaseClient";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 function TodoForm(){
     const [datahora, setDataHora] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
     const [descricao, setDescricao] = useState("")
     const [titulo, setTitulo] = useState("");
-    const onHandleTitulo = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitulo(event.target.value);
-    };
 
-    const onHandleDescricao = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDescricao(event.target.value);
-    };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    const handleSubmit = async () => {
         const formattedDate = new Date(datahora).toISOString();
-        if(localStorage.getItem("user")) {
         const { error } = await supabase.from("todo").insert({
             title: titulo,
             description: descricao,
             date_time: formattedDate,
             concluded: false
         });
-
         if (error) console.error(error);
         else {
-            alert("Todo inserido!");
-            setDescricao("");
-            setTitulo("");
-            setDataHora({ startDate: new Date(), endDate: null });
-        }
+            Swal.fire({
+                title: "You add a new activity!",
+                text: `${titulo} - ${datahora}`,
+                icon: "success"
+            });
+            window.dispatchEvent(new Event("todoAtualizado"));
         }
     };
 
@@ -42,16 +37,16 @@ function TodoForm(){
                 className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-400"
                 type="text"
                 placeholder="título"
-                onChange={onHandleTitulo}
                 value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
                 style={{ width: "100%", marginBottom: "10px", padding: "5px" }}
             />
             <input
                 className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-blue-400"
                 type="text"
                 placeholder="Descrição"
-                onChange={onHandleDescricao}
                 value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
                 style={{ width: "100%", marginBottom: "10px", padding: "5px" }}
             />
                 <div className="flex flex-row gap-4 mb-4">

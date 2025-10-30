@@ -1,4 +1,5 @@
 import supabase from '../supabaseClient';
+import Swal from 'sweetalert2'
 
 export const adicionarUsuario = async (email: string, password: string, nome: string) => {
   const emailTrimmed = email?.trim();
@@ -21,7 +22,6 @@ export const adicionarUsuario = async (email: string, password: string, nome: st
     console.error('Supabase insert error:', error);
     throw error;
   } else {
-    alert('Usuário cadastrado com sucesso!');
     window.location.href = "/login";
   }
 
