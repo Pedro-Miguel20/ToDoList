@@ -26,7 +26,7 @@
   margin: 0 auto;
   font-family: 'Roboto Mono Variable', sans-serif;
   font-size: 15px;
-  background-color: white;
+  background-color: ghostwhite;
   height: 100vh;
 }
 
@@ -64,4 +64,13 @@
 
 .read-the-docs {
   color: #888;
+}
+
+@media (max-width: 500px) {
+  .ant-picker-content{
+    height: 150px !important;
+  }
+  .ant-picker-datetime-panel{
+    flex-direction: column !important;
+  }
 }

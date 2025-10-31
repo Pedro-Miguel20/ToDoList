@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Calendar, Modal, Badge } from "antd";
+import { Calendar, Modal, Badge, Button, Popover,  Flex, Spin } from "antd";
+import { LoadingOutlined } from '@ant-design/icons';
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import supabase from "../supabaseClient";
+import TodoForm from "./TodoForm";
 
 interface Todo {
   id: number;
@@ -21,38 +23,36 @@ export default function TodoCalendar() {
   const [selectedTasks, setSelectedTasks] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [popoverVisible, setPopoverVisible] = useState<number | null>(null);
 
-  // 🔄 Busca tarefas
   const handleData = async () => {
-  try {
-    setLoading(true);
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+    try {
+      setLoading(true);
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-    if (!user || userError) {
-      console.error("Erro ao obter usuário:", userError);
-      setTodos([]);
-      return;
+      if (!user || userError) {
+        console.error("Erro ao obter usuário:", userError);
+        setTodos([]);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("todo")
+        .select("*")
+        .eq("id_user", user.id)
+        .order("date_time", { ascending: true });
+
+      if (error) throw error;
+      setTodos(data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    const { data, error } = await supabase
-      .from("todo")
-      .select("*")
-      .eq("id_user", user.id) // <- filtra pelo usuário logado
-      .order("date_time", { ascending: true });
-
-    if (error) throw error;
-
-    setTodos(data || []);
-    console.log("Tarefas carregadas do usuário logado:", data);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     handleData();
@@ -61,48 +61,85 @@ export default function TodoCalendar() {
     return () => window.removeEventListener("todoAtualizado", atualizar);
   }, []);
 
-  // 📅 Clicou na data
-  const onSelect = (value: Dayjs) => {
-    const tarefasDoDia = todos.filter((todo) =>
-      dayjs(todo.date_time).isSame(value, "day")
-    );
-    setSelectedTasks(tarefasDoDia);
-    setSelectedDate(value);
-    setIsModalOpen(true);
-  };
-
-  // 🎨 Renderiza badges no calendário
+  // 🎨 Renderiza badges e o popover em cada célula
   const dateCellRender = (date: Dayjs) => {
     const tarefasDoDia = todos.filter((todo) =>
       dayjs(todo.date_time).isSame(date, "day")
     );
 
-    if (tarefasDoDia.length === 0) return null;
+    const cellContent = (
+      <div
+        style={{
+          minHeight: 60,
+          position: "relative",
+          cursor: "pointer",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedDate(date);
+          setPopoverVisible(date.valueOf());
+        }}
+      >
+        {tarefasDoDia.length > 0 && (
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {tarefasDoDia.slice(0, 3).map((todo) => (
+              <li key={todo.id}>
+                <Badge
+                  status={todo.concluded ? "success" : "warning"}
+                  text={todo.title}
+                />
+              </li>
+            ))}
+            {tarefasDoDia.length > 3 && (
+              <li style={{ color: "gray", fontSize: 12 }}>
+                +{tarefasDoDia.length - 3} tarefas
+              </li>
+            )}
+          </ul>
+        )}
+      </div>
+    );
+
+    // conteúdo do popover
+    const popoverContent = (
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <TodoForm date={date.toISOString()} />
+        <Button
+          onClick={() => {
+            const tarefasDoDia = todos.filter((todo) =>
+              dayjs(todo.date_time).isSame(date, "day")
+            );
+            setSelectedTasks(tarefasDoDia);
+            setIsModalOpen(true);
+            setPopoverVisible(null);
+          }}
+        >
+          Ver tarefas
+        </Button>
+      </div>
+    );
 
     return (
-      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {tarefasDoDia.slice(0, 3).map((todo) => (
-          <li key={todo.id} style={{ marginBottom: 2 }}>
-            <Badge className="font-semibold"
-              
-              status={todo.concluded ? "success" : "warning"}
-              text={todo.title} // sem texto para não quebrar layout
-            />
-          </li>
-        ))}
-        {tarefasDoDia.length > 3 && <li className="text-gray-500 text-center inset-x-0 bottom-0 absolute">+{tarefasDoDia.length - 3} tarefas</li>}
-      </ul>
+      <Popover
+        content={popoverContent}
+        title={date.format("DD/MM/YYYY")}
+        trigger="click"
+        open={popoverVisible === date.valueOf()}
+        onOpenChange={(visible) =>
+          setPopoverVisible(visible ? date.valueOf() : null)
+        }
+      >
+        {cellContent}
+      </Popover>
     );
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return (
+    <Spin className="absolute top-[50%] left-[50%] transform-[translate(-50%, -50%)]" indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />);
 
   return (
     <>
-      <Calendar
-        onSelect={onSelect}
-        cellRender={(date) => dateCellRender(date)}
-      />
+      <Calendar cellRender={dateCellRender} />
 
       <Modal
         title={`Tarefas de ${selectedDate?.format("DD/MM/YYYY")}`}
@@ -129,6 +166,8 @@ export default function TodoCalendar() {
         ) : (
           <p>Nenhuma tarefa para esta data.</p>
         )}
+
+        <TodoForm/>
       </Modal>
     </>
   );

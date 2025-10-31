@@ -86,8 +86,8 @@ export default function TodoForm() {
             onChange={(e) => setDescricao(e.target.value)}
           />
 
-          <div className="flex flex-row gap-4 mb-4">
-            <DatePicker
+          <div className="w-full gap-4 mb-4">
+            <DatePicker className="w-full"
               showTime
               value={datahora}
               onChange={(newDate) => setDataHora(newDate)}

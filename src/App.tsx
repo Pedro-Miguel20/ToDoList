@@ -1,23 +1,34 @@
 import {
   createBrowserRouter,
-  RouterProvider,
+  RouterProvider, redirect
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Todo from "./pages/Todo";
+import Todo from "./pages/TodoCalendar";
+import Landing from "./pages/Landing";
 import './App.css';
 import MainLayout from "./layouts/MainLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import RegisterForm from "./components/RegisterForm";
 import LoginForm from "./components/LoginForm";
+import LandingLayout from "./layouts/LandingLayout";
+import TodoCalendar from "./components/TodoList";
 
+function checkAuth() {
+  const user = localStorage.getItem("usuario");
+  if (!user) {
+    throw redirect("/login");
+  }
+  return user
+}
 
 const router = createBrowserRouter([
   {
     element: <MainLayout/>,
     children: [
-      {path: "/", element: <Home/>},
-      {path: "/todo", element: <Todo/>}
-    ]
+      {path: "/home", element: <Home/>},
+      {path: "/todo", element: <TodoCalendar/>}
+    ],
+    loader: checkAuth
   },
   {
     element: <AuthLayout/>,
@@ -25,6 +36,13 @@ const router = createBrowserRouter([
       {path: "/register", element: <RegisterForm/>},
       {path: "/login", element: <LoginForm/>}
     ]
+  },
+  {
+    element: <LandingLayout/>,
+    children: [
+      {path: "/", element: <Landing/>},
+    ],
+    loader: checkAuth
   },
 ]);
 

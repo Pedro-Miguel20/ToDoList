@@ -1,18 +1,21 @@
 import supabase from "../supabaseClient";
+
 export async function loginUser(email: string, password: string) {
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
-    password
+    password,
   });
 
   if (error) throw error;
   if (!data) throw new Error("Email não encontrado");
 
   localStorage.setItem("usuario", JSON.stringify({
+    name: data.user.user_metadata.nome, 
     id: data.user.id,
     email: data.user.email
   }));
 
-  return data.user;
+
+  return data
 }
