@@ -5,6 +5,7 @@ import { IconLogout2 } from '@tabler/icons-react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space } from 'antd';
+import { loginUser } from "../services/login";
 
 
 
@@ -35,15 +36,13 @@ export default function Options() {
 const items: MenuProps['items'] = [
   {
     label: (
-      <button><p>teste</p></button>
+      <button><p>profile</p></button>
     ),
     key: '0',
   },
   {
     label: (
-      <a href="https://www.aliyun.com" target="_blank" rel="noopener noreferrer">
-        2nd menu item
-      </a>
+      <button>dark</button>
     ),
     key: '1',
   },
@@ -56,12 +55,15 @@ const items: MenuProps['items'] = [
   },
 ];
 
+  const loginUser = localStorage.getItem("usuario");
+  const userObject = loginUser ? JSON.parse(loginUser) : null;
+
 
   return (
     <Dropdown menu={{ items }} trigger={['click']}>
     <a onClick={(e) => e.preventDefault()}>
       <Space className="select-none cursor-pointer opacity-80 hover:opacity-100">
-        Options
+        {userObject.name}
         <DownOutlined />
       </Space>
     </a>

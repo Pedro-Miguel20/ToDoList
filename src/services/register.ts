@@ -1,5 +1,4 @@
 import supabase from '../supabaseClient';
-import Swal from 'sweetalert2'
 
 export const adicionarUsuario = async (email: string, password: string, nome: string) => {
   const emailTrimmed = email?.trim();

@@ -5,6 +5,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import supabase from "../supabaseClient";
 import TodoForm from "./TodoForm";
+import DeleteButton from "./DeleteButton";
 
 interface Todo {
   id: number;
@@ -42,6 +43,7 @@ export default function TodoCalendar() {
       const { data, error } = await supabase
         .from("todo")
         .select("*")
+        .eq("active", true) 
         .eq("id_user", user.id)
         .order("date_time", { ascending: true });
 
@@ -157,8 +159,19 @@ export default function TodoCalendar() {
                 border: "1px solid #eee",
                 borderRadius: 6,
               }}
-            >
-              <h4>{todo.title}</h4>
+            > <div className="flex w-full justify-between align-items">
+              <h2 className="text-lg fw-bolder">{todo.title}</h2>
+              <DeleteButton
+                id={todo.id}
+                active={todo.active}
+                onUpdate={() => {
+                    // Atualiza modal
+                    setSelectedTasks(prev => prev.filter(t => t.id !== todo.id));
+                    // Atualiza calendário
+                    setTodos(prev => prev.filter(t => t.id !== todo.id));
+                  }}
+              />
+              </div>
               <p>{todo.description}</p>
               <span>{dayjs(todo.date_time).format("HH:mm DD/MM/YYYY")}</span>
             </div>
