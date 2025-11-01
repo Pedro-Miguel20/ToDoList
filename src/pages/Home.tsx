@@ -1,8 +1,13 @@
+
+
+
+
 function Home() {
   return (
-    <div>
-      <h1>Home Component</h1>
-    </div>
+      <>
+         <section className="h-100">
+          </section>     
+      </>
   );
 }
 
