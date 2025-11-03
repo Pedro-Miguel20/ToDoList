@@ -7,6 +7,8 @@ import supabase from "../../lib/supabaseClient";
 import TodoForm from "./TodoForm";
 import DeleteButton from "./DeleteButton";
 import {getTodoList} from "../../api/todolist";
+import { AnimatePresence, motion } from "framer-motion";
+
 
 interface Todo {
   id: number;
@@ -137,7 +139,19 @@ export default function TodoCalendar() {
 
   return (
     <>
-      <Calendar cellRender={dateCellRender} />
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 50 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Calendar className="px-3
+" cellRender={dateCellRender} />
+      </motion.div>
+    </AnimatePresence>
+      
 
       <Modal
         title={`Tarefas de ${selectedDate?.format("DD/MM/YYYY")}`}

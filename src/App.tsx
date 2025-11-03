@@ -40,8 +40,7 @@ const router = createBrowserRouter([
     element: <LandingLayout/>,
     children: [
       {path: "/", element: <Landing/>},
-    ],
-    loader: checkAuth
+    ]
   },
 ]);
 

@@ -5,7 +5,6 @@ import { IconLogout2 } from '@tabler/icons-react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space } from 'antd';
-import { loginUser } from "../api/login";
 
 
 
@@ -61,13 +60,12 @@ const items: MenuProps['items'] = [
 
   return (
     <Dropdown menu={{ items }} trigger={['click']}>
-    <a onClick={(e) => e.preventDefault()}>
-      <Space className="select-none cursor-pointer opacity-80 hover:opacity-100">
-        {userObject.name}
-        <DownOutlined />
-      </Space>
-    </a>
-  </Dropdown>
-    
+      <a onClick={(e) => e.preventDefault()}>
+        <Space className="select-none cursor-pointer opacity-80 hover:opacity-100">
+          {userObject.name}
+          <DownOutlined />
+        </Space>
+      </a>
+    </Dropdown>
   );
 }
