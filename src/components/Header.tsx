@@ -22,7 +22,6 @@ function Header() {
 
 
   const loginUser = localStorage.getItem("usuario");
-  console.log(loginUser)
 
   return (
     <header className="flex justify-between items-center align-center p-4 bg-blue-700 text-white">
