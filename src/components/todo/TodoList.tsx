@@ -3,7 +3,7 @@ import { Calendar, Modal, Badge, Button, Popover,  Flex, Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import supabase from "../supabaseClient";
+import supabase from "../../lib/supabaseClient";
 import TodoForm from "./TodoForm";
 import DeleteButton from "./DeleteButton";
 

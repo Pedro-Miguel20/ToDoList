@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import supabase from "../supabaseClient";
+import supabase from "../lib/supabaseClient";
 import { message } from "antd";
 import { IconLogout2 } from '@tabler/icons-react';
 import { DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space } from 'antd';
-import { loginUser } from "../services/login";
+import { loginUser } from "../api/login";
 
 
 

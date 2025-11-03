@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { adicionarUsuario } from "../services/register";
+import { adicionarUsuario } from "../../api/register";
 import { NavLink } from "react-router-dom";
 import { IconArrowBarLeft} from "@tabler/icons-react"
 
