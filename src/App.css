@@ -65,3 +65,13 @@
 .read-the-docs {
   color: #888;
 }
+
+@media (max-width: 500px) {
+  .ant-picker-datetime-panel{
+    flex-direction: column;
+  }
+
+  .ant-picker-content{
+    height: 150px !important;
+  }
+}

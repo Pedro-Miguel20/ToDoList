@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import supabase from "../supabaseClient";
 import { DatePicker, Modal, Button } from "antd";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import { addTodo } from "../../api/AddTodo";
+
 
 export default function TodoForm() {
   const [datahora, setDataHora] = useState<dayjs.Dayjs | null>(null);
@@ -26,31 +27,25 @@ export default function TodoForm() {
 
     const formattedDate = datahora.toISOString();
 
-    const { error } = await supabase.from("todo").insert({
-      title: titulo,
-      description: descricao,
-      date_time: formattedDate,
-      concluded: false,
-    });
-
-    if (error) {
-      console.error(error);
-      Swal.fire({
-        icon: "error",
-        title: "Erro ao adicionar atividade",
-        text: error.message,
-      });
-    } else {
-      Swal.fire({
-        title: "Atividade adicionada!",
-        text: `${titulo} - ${datahora.format("DD/MM/YYYY HH:mm")}`,
-        icon: "success",
-      });
-      window.dispatchEvent(new Event("todoAtualizado"));
-      setTitulo("");
-      setDescricao("");
-      setDataHora(null);
-      setIsModalOpen(false);
+    try{
+    await addTodo(formattedDate, descricao, titulo);
+    Swal.fire({
+          title: "Atividade adicionada!",
+          text: `${titulo} - ${datahora.format("DD/MM/YYYY HH:mm")}`,
+          icon: "success",
+        });
+        window.dispatchEvent(new Event("todoAtualizado"));
+        setTitulo("");
+        setDescricao("");
+        setDataHora(null);
+        setIsModalOpen(false);
+    } catch(error: any){
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro ao adicionar atividade",
+          text: error.message,
+        });
     }
   };
 

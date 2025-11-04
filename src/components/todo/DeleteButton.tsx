@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteTodoItem } from "../services/deleteTodo";
+import { deleteTodoItem } from "../../api/deleteTodo";
 import {Button} from "antd"
 
 interface DeleteButtonProps {

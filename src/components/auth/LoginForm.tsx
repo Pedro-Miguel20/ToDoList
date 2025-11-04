@@ -1,14 +1,16 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { loginUser } from "../services/login";
+import { loginUser } from "../../api/login";
 import { useState } from "react";
 import { IconArrowBarLeft} from "@tabler/icons-react"
+import { AnimatePresence, motion } from "framer-motion";
+
 
 function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +25,16 @@ function Login() {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -50 }}
+        transition={{ duration: 0.3 }}
+      >
+        <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -86,6 +97,9 @@ function Login() {
         </div>
       </div>
     </section>
+      </motion.div>
+    </AnimatePresence>
+    </>
   );
 }
 

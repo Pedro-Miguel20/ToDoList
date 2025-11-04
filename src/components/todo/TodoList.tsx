@@ -3,9 +3,12 @@ import { Calendar, Modal, Badge, Button, Popover,  Flex, Spin } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import supabase from "../supabaseClient";
+import supabase from "../../lib/supabaseClient";
 import TodoForm from "./TodoForm";
 import DeleteButton from "./DeleteButton";
+import {getTodoList} from "../../api/todolist";
+import { AnimatePresence, motion } from "framer-motion";
+
 
 interface Todo {
   id: number;
@@ -27,6 +30,8 @@ export default function TodoCalendar() {
   const [popoverVisible, setPopoverVisible] = useState<number | null>(null);
 
   const handleData = async () => {
+    
+
     try {
       setLoading(true);
       const {
@@ -38,19 +43,12 @@ export default function TodoCalendar() {
         console.error("Erro ao obter usuário:", userError);
         setTodos([]);
         return;
+      } else {
+        const todosData = await getTodoList(user.id);
+        setTodos(todosData);
       }
-
-      const { data, error } = await supabase
-        .from("todo")
-        .select("*")
-        .eq("active", true) 
-        .eq("id_user", user.id)
-        .order("date_time", { ascending: true });
-
-      if (error) throw error;
-      setTodos(data || []);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -105,7 +103,7 @@ export default function TodoCalendar() {
     // conteúdo do popover
     const popoverContent = (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <TodoForm date={date.toISOString()} />
+        <TodoForm />
         <Button
           onClick={() => {
             const tarefasDoDia = todos.filter((todo) =>
@@ -141,7 +139,19 @@ export default function TodoCalendar() {
 
   return (
     <>
-      <Calendar cellRender={dateCellRender} />
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 50 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Calendar className="px-3
+" cellRender={dateCellRender} />
+      </motion.div>
+    </AnimatePresence>
+      
 
       <Modal
         title={`Tarefas de ${selectedDate?.format("DD/MM/YYYY")}`}
