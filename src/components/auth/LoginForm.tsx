@@ -3,24 +3,47 @@ import { loginUser } from "../../api/login";
 import { useState } from "react";
 import { IconArrowBarLeft} from "@tabler/icons-react"
 import { AnimatePresence, motion } from "framer-motion";
+import inputValidation from "../../services/InputValidation";
+import InputError from "../error/inputError";
 
 
 function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({ ...prev, [name]: value }));
+
+    // limpa o erro do campo quando o usuário começa a digitar
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+
+    
+      const validation = inputValidation(form, "login");
+    
+      if (!validation.isValid) {
+        setErrors(validation.errors); // exibe erros específicos
+        return;
+      }
 
     try {
-      await loginUser(email, password);
+      await loginUser(form.email, form.password);
       navigate("/todo"); // redireciona para sua página de tarefas
     } catch (err: any) {
-      setError(err.message || "Erro ao fazer login");
+      setErrors(err.message || "Erro ao fazer login");
     }
   };
 
@@ -47,33 +70,30 @@ function Login() {
             </h1>
 
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              {error && <p className="text-red-500 text-sm">{error}</p>}
 
               <div>
-                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Your email
+                <label htmlFor="email" className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Your email<InputError message={errors.email}/>
                 </label>
                 <input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+                  value={form.email}
+                  onChange={handleInputChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="name@company.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Password
+                <label htmlFor="password" className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Password<InputError message={errors.email}/>
                 </label>
                 <input
                   type="password"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  value={form.password}
+                  onChange={handleInputChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="••••••••"
                 />
