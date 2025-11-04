@@ -1,4 +1,4 @@
-import { Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Options from "./Options";
 import dayjs from "dayjs";
 import { useState, useEffect } from "react";
@@ -12,7 +12,7 @@ function Header() {
 
   const [today, setToday] = useState(dayjs().format("DD/MM/YYYY HH:mm:ss"));
   useEffect(() =>{
-    const Interval = setInterval(()=>{
+    setInterval(()=>{
       setToday(dayjs().format("DD/MM/YYYY HH:mm:ss"));     
     }, 1000);
 

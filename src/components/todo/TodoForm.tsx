@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DatePicker, Modal, Button } from "antd";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
-import { addTodo } from "../../api/AddTodo";
+import { addTodo } from "../../api/addTodo";
 
 
 export default function TodoForm() {
