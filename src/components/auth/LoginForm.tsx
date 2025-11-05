@@ -37,7 +37,6 @@ function Login() {
     
       if (!validation.isValid) {
         setErrors(validation.errors);
-        console.log(validation.errors) // exibe erros específicos
         return;
       }
 
@@ -45,8 +44,6 @@ function Login() {
       await loginUser(form.email, form.password);
       navigate("/todo"); // redireciona para sua página de tarefas
     } catch (error: any) {
-      console.error(error);
-
       setErrors((prev) => ({
         ...prev,
         email: error?.message || "Erro ao fazer login",
