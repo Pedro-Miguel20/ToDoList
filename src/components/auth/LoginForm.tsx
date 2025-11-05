@@ -3,7 +3,7 @@ import { loginUser } from "../../api/login";
 import { useState } from "react";
 import { IconArrowBarLeft} from "@tabler/icons-react"
 import { AnimatePresence, motion } from "framer-motion";
-import inputValidation from "../../services/InputValidation";
+import inputAuthValidation from "../../services/InputAuthValidation";
 import InputError from "../error/inputError";
 
 
@@ -32,10 +32,11 @@ function Login() {
     e.preventDefault();
 
     
-      const validation = inputValidation(form, "login");
+      const validation = inputAuthValidation(form, "login");
     
       if (!validation.isValid) {
-        setErrors(validation.errors); // exibe erros específicos
+        setErrors(validation.errors);
+        console.log(validation.errors) // exibe erros específicos
         return;
       }
 

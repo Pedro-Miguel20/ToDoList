@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { IconArrowBarLeft } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import InputError from "../error/inputError";
-import inputValidation from "../../services/InputValidation";
+import inputAuthValidation from "../../services/InputAuthValidation";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -31,7 +31,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validation = inputValidation(form, "register");
+    const validation = inputAuthValidation(form, "register");
 
     if (!validation.isValid) {
       setErrors(validation.errors); // exibe erros específicos

@@ -1,10 +1,12 @@
-export default function inputValidation(form: any, type: "login" | "register") {
+export default function inputAuthValidation(form: any, type: "login" | "register") {
   const errors: any = {};
   let isValid = true;
 
-  if (type === "login" || !form.nome?.trim()) {
+  if (type === "register"){
+    if(!form.nome?.trim()){
     errors.nome = "O nome é obrigatório";
     isValid = false;
+    }
   }
 
   if (!form.email?.trim()) {
