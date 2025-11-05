@@ -76,6 +76,7 @@ function Login() {
                   Your email<InputError message={errors.email}/>
                 </label>
                 <input
+                  name="email"
                   type="email"
                   id="email"
                   value={form.email}
@@ -87,9 +88,10 @@ function Login() {
 
               <div>
                 <label htmlFor="password" className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Password<InputError message={errors.email}/>
+                  Password<InputError message={errors.password}/>
                 </label>
                 <input
+                  name="password"
                   type="password"
                   id="password"
                   value={form.password}
