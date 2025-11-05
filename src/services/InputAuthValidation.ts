@@ -4,18 +4,23 @@ export default function inputAuthValidation(form: any, type: "login" | "register
 
   if (type === "register"){
     if(!form.nome?.trim()){
-    errors.nome = "O nome é obrigatório";
-    isValid = false;
+      errors.nome = "Name is required";
+      isValid = false;
+    }
+    if (form.password?.length < 8) {
+      errors.password = 'Atlest 8 characters';
+      isValid = false;
     }
   }
 
   if (!form.email?.trim()) {
-    errors.email = "O email é obrigatório";
+    errors.email = "Email is required";
     isValid = false;
   }
+  if(!form.email)
 
   if (!form.password?.trim()) {
-    errors.password = "A senha é obrigatória";
+    errors.password = "Password is required";
     isValid = false;
   }
 

@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { adicionarUsuario } from "../../api/register";
 import { NavLink } from "react-router-dom";
 import { IconArrowBarLeft } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import InputError from "../error/inputError";
 import inputAuthValidation from "../../services/InputAuthValidation";
+import Swal from "sweetalert2";
+
 
 export default function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     nome: "",
     email: "",
@@ -40,9 +44,26 @@ export default function Register() {
 
     try {
       await adicionarUsuario(form.email, form.password, form.nome);
-      console.log("Usuário registrado com sucesso!");
+
+      Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "You are registered",
+      text: "A email confirmation was sent",
+      showConfirmButton: false,
+      timer: 2000
+    }).then(() => {
+      navigate("/login");
+    });
     } catch (err: any) {
-      console.error("Erro ao cadastrar usuário:", err.message);
+      Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Erro ao cadastrar usuário:",
+      text: err.message,
+      showConfirmButton: true,
+      timer: 3000
+    })
     }
   };
 
@@ -63,7 +84,7 @@ export default function Register() {
                   to="/"
                   className="flex items-center text-lg font-bold text-gray-900 dark:text-white"
                 >
-                  <IconArrowBarLeft stroke={2} /> Home
+                  <IconArrowBarLeft stroke={2} />Home
                 </NavLink>
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create an account
@@ -75,7 +96,7 @@ export default function Register() {
                       htmlFor="nome"
                       className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Your name<InputError message={errors.nome} />
+                      Name<InputError message={errors.nome} />
                     </label>
                     <input
                       type="text"
@@ -94,7 +115,7 @@ export default function Register() {
                       htmlFor="email"
                       className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Your email <InputError message={errors.email} />
+                      Email <InputError message={errors.email} />
                     </label>
                     <input
                       type="email"

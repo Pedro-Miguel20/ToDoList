@@ -4,10 +4,6 @@ export const adicionarUsuario = async (email: string, password: string, nome: st
   const emailTrimmed = email?.trim();
   if (!emailTrimmed) throw new Error("Informe um email válido");
 
-  if (password.length < 6) {
-    throw new Error('A senha deve ter pelo menos 6 caracteres');
-  }
-
   // 3️⃣ Insere o usuário no banco com senha criptografada
   const { data, error } = await supabase.auth.signUp({
     email: emailTrimmed,   // <- email na raiz
@@ -20,8 +16,6 @@ export const adicionarUsuario = async (email: string, password: string, nome: st
   if (error) {
     console.error('Supabase insert error:', error);
     throw error;
-  } else {
-    window.location.href = "/login";
   }
 
   return data;

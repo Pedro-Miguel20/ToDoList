@@ -17,6 +17,7 @@ function Login() {
   const [errors, setErrors] = useState({
     email: "",
     password: "",
+    message: "",
   });
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +44,13 @@ function Login() {
     try {
       await loginUser(form.email, form.password);
       navigate("/todo"); // redireciona para sua página de tarefas
-    } catch (err: any) {
-      setErrors(err.message || "Erro ao fazer login");
+    } catch (error: any) {
+      console.error(error);
+
+      setErrors((prev) => ({
+        ...prev,
+        email: error?.message || "Erro ao fazer login",
+      }));
     }
   };
 
@@ -71,10 +77,9 @@ function Login() {
             </h1>
 
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-
               <div>
                 <label htmlFor="email" className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Your email<InputError message={errors.email}/>
+                  Email<InputError message={errors.email}/>
                 </label>
                 <input
                   name="email"
