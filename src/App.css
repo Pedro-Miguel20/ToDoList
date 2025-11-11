@@ -75,3 +75,7 @@
     height: 150px !important;
   }
 }
+
+.ant-modal-mask{
+  z-index: 1000 !important;
+}

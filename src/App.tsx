@@ -11,6 +11,7 @@ import RegisterForm from "./components/auth/RegisterForm";
 import LoginForm from "./components/auth/LoginForm";
 import LandingLayout from "./layouts/LandingLayout";
 import TodoCalendar from "./components/todo/TodoList";
+import NotFound from "./pages/NotFound";
 
 function checkAuth() {
   const user = localStorage.getItem("usuario");
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {path: "/", element: <Landing/>},
     ]
   },
+  {
+    path: "*",
+    element: <NotFound/>
+  }
 ]);
 
 function App() {
