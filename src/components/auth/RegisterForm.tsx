@@ -7,6 +7,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import InputError from "../error/inputError";
 import inputAuthValidation from "../../services/InputAuthValidation";
 import Swal from "sweetalert2";
+import { IconEye,  IconEyeOff} from '@tabler/icons-react';
+
+
 
 
 export default function Register() {
@@ -22,6 +25,12 @@ export default function Register() {
     email: "",
     password: "",
   });
+
+    const [showPassword, setShowPassword] = useState(false);
+  
+    const handleToggle = () => setShowPassword(!showPassword);
+
+
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -128,7 +137,8 @@ export default function Register() {
                     />
                   </div>
 
-                  <div>
+                  <div className="flex">
+                    <div className="w-full">
                     <label
                       htmlFor="password"
                       className="flex justify-between mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -136,7 +146,7 @@ export default function Register() {
                       Password<InputError message={errors.password} />
                     </label>
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       name="password"
                       id="password"
                       value={form.password}
@@ -144,6 +154,14 @@ export default function Register() {
                       placeholder="••••••••"
                       className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-400 mb-1"
                     />
+                    </div>
+                    <span className="flex justify-around items-center" onClick={handleToggle}>
+                      {showPassword ? 
+                      (<IconEye className="absolute mr-10 mt-5"
+                        size={25}/>
+                      ) : (<IconEyeOff
+                      className="absolute mr-10 mt-5" size={25}/>)}
+                    </span>
                     
                   </div>
 

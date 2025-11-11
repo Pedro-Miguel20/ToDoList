@@ -84,7 +84,7 @@ function Login() {
                   id="email"
                   value={form.email}
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-400 mb-1"
                   placeholder="name@company.com"
                 />
               </div>
@@ -99,7 +99,7 @@ function Login() {
                   id="password"
                   value={form.password}
                   onChange={handleInputChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="w-full p-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-400 mb-1"
                   placeholder="••••••••"
                 />
               </div>
