@@ -1,25 +1,81 @@
-import { useState } from "react";
+import { useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { adicionarUsuario } from "../../api/register";
 import { NavLink } from "react-router-dom";
-import { IconArrowBarLeft} from "@tabler/icons-react"
+import { IconArrowBarLeft } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
+import InputError from "../error/inputError";
+import inputAuthValidation from "../../services/InputAuthValidation";
+import Swal from "sweetalert2";
+import { IconEye,  IconEyeOff} from '@tabler/icons-react';
+
 
 
 
 export default function Register() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nome, setNome] = useState("");
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({
+    nome: "",
+    email: "",
+    password: "",
+  });
+
+    const [showPassword, setShowPassword] = useState(false);
+  
+    const handleToggle = () => setShowPassword(!showPassword);
+
+
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({ ...prev, [name]: value }));
+
+    // limpa o erro do campo quando o usuário começa a digitar
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    await adicionarUsuario(email, password, nome);
-  } catch (err: any) {
-    console.error('Erro ao cadastrar usuário:', err.message);
-  }
-};
+    const validation = inputAuthValidation(form, "register");
+
+    if (!validation.isValid) {
+      setErrors(validation.errors); // exibe erros específicos
+      return;
+    }
+
+    try {
+      await adicionarUsuario(form.email, form.password, form.nome);
+
+      Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "You are registered",
+      text: "A email confirmation was sent",
+      showConfirmButton: false,
+      timer: 2000
+    }).then(() => {
+      navigate("/login");
+    });
+    } catch (err: any) {
+      Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Erro ao cadastrar usuário:",
+      text: err.message,
+      showConfirmButton: true,
+      timer: 3000
+    })
+    }
+  };
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
