@@ -16,5 +16,5 @@ export async function loginUser(email: string, password: string) {
     email: data.user.email
   }));
 
-  return data
+  return data || error
 }
