@@ -5,7 +5,7 @@ function LandingLayout() {
     return (
         <><Header/>
 
-            <main className="h-screen flex items-center">
+            <main className="flex grow-1 relative">
                 
             <Outlet/>
             </main>
