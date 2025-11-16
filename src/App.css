@@ -28,6 +28,8 @@
   font-size: 15px;
   background-color: ghostwhite;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -74,4 +76,17 @@
   .ant-picker-content{
     height: 150px !important;
   }
+}
+
+.ant-modal-mask, .ant-modal-wrap{
+  z-index: 1000 !important;
+}
+
+.ant-picker-calendar-date-content{
+  height: auto !important;
+}
+
+.ant-badge-status-text{
+  position: absolute;
+  white-space: nowrap;
 }
