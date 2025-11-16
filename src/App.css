@@ -78,6 +78,15 @@
   }
 }
 
-.ant-modal-mask{
+.ant-modal-mask, .ant-modal-wrap{
   z-index: 1000 !important;
+}
+
+.ant-picker-calendar-date-content{
+  height: auto !important;
+}
+
+.ant-badge-status-text{
+  position: absolute;
+  white-space: nowrap;
 }
