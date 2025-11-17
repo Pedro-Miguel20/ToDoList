@@ -72,13 +72,9 @@
   .ant-picker-datetime-panel{
     flex-direction: column;
   }
-
-  .ant-picker-content{
-    height: 150px !important;
-  }
 }
 
-.ant-modal-mask, .ant-modal-wrap{
+.ant-modal-mask, .ant-modal-wrap, .ant-popover{
   z-index: 1000 !important;
 }
 
