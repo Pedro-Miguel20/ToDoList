@@ -90,3 +90,8 @@
   position: absolute;
   white-space: nowrap;
 }
+
+.ant-picker-body, .ant-picker-date-panel, .ant-picker-panel{
+  display: flex !important;
+  flex-grow: 1 !important;
+}

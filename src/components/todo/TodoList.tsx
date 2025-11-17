@@ -147,7 +147,7 @@ export default function TodoCalendar() {
         exit={{ opacity: 0, x: 50 }}
         transition={{ duration: 0.3 }}
       >
-        <Calendar className="px-3 grow
+        <Calendar className="px-3 flex flex-col grow
 " cellRender={dateCellRender} />
       </motion.div>
     </AnimatePresence>
