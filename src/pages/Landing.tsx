@@ -1,8 +1,15 @@
+import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+
 function Landing() {
   return (
       <>
-         <main>
-            <h1>teste</h1>
+         <main className="flex flex-col justify-between grow
+">          
+               <Hero/>
+            
+
+            <Footer/>
          </main>     
       </>
   );

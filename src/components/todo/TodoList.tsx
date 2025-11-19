@@ -140,14 +140,14 @@ export default function TodoCalendar() {
   return (
     <>
     <AnimatePresence mode="wait">
-      <motion.div
+      <motion.div className="flex"
         key={location.pathname}
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 50 }}
         transition={{ duration: 0.3 }}
       >
-        <Calendar className="px-3
+        <Calendar className="px-3 flex flex-col grow
 " cellRender={dateCellRender} />
       </motion.div>
     </AnimatePresence>

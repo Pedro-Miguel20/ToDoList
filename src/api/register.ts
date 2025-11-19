@@ -1,12 +1,11 @@
 import supabase from '../lib/supabaseClient';
+import * as EmailValidator from 'email-validator';
 
 export const adicionarUsuario = async (email: string, password: string, nome: string) => {
   const emailTrimmed = email?.trim();
-  if (!emailTrimmed) throw new Error("Informe um email válido");
-
-  if (password.length < 6) {
-    throw new Error('A senha deve ter pelo menos 6 caracteres');
-  }
+  const validEmail = EmailValidator.validate(email)
+  if (!emailTrimmed) throw new Error("Type a valid email");
+  if (!validEmail) throw new Error("Type a valid email");
 
   // 3️⃣ Insere o usuário no banco com senha criptografada
   const { data, error } = await supabase.auth.signUp({
@@ -20,8 +19,6 @@ export const adicionarUsuario = async (email: string, password: string, nome: st
   if (error) {
     console.error('Supabase insert error:', error);
     throw error;
-  } else {
-    window.location.href = "/login";
   }
 
   return data;

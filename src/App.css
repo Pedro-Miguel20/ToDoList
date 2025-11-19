@@ -1,7 +1,6 @@
-@import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 
 @font-face {
@@ -28,6 +27,8 @@
   font-size: 15px;
   background-color: ghostwhite;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -70,8 +71,22 @@
   .ant-picker-datetime-panel{
     flex-direction: column;
   }
+}
 
-  .ant-picker-content{
-    height: 150px !important;
-  }
+.ant-modal-mask, .ant-modal-wrap, .ant-popover{
+  z-index: 1000 !important;
+}
+
+.ant-picker-calendar-date-content{
+  height: auto !important;
+}
+
+.ant-badge-status-text{
+  position: absolute;
+  white-space: nowrap;
+}
+
+.ant-picker-body, .ant-picker-date-panel, .ant-picker-panel{
+  display: flex !important;
+  flex-grow: 1 !important;
 }

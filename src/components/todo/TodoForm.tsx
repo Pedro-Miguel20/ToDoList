@@ -25,7 +25,7 @@ export default function TodoForm() {
       return;
     }
 
-    const formattedDate = datahora.toISOString();
+    const formattedDate = datahora.format("YYYY-MM-DDTHH:mm:ssZ");
 
     try{
     await addTodo(formattedDate, descricao, titulo);

@@ -3,9 +3,9 @@ import Header from "../components/Header";
 
 function MainLayout() {
     return (
-        <main className="">
+        <main className="flex grow flex-col">
             <Header/>
-                <section className="">
+                <section className="flex grow">
                 <Outlet/>
                 </section>
         </main>

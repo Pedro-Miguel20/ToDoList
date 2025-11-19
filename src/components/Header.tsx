@@ -19,7 +19,7 @@ function Header() {
     return () => {clearInterval};
   });
 
-  return <p className="text-sm opacity-50 hover:opacity-100 select-none cursor-pointer">{today}</p>
+  return <p className="text-sm opacity-50 hover:opacity-100 select-none cursor-pointer ml-4 text-center">{today}</p>
   }
 
 
@@ -41,7 +41,7 @@ function Header() {
       <nav>
 
       </nav>
-      <div className="flex items-center gap-5 sm:gap-10">
+      <div className="flex items-center gap-3 sm:gap-10">
         {loginUser && (<Clock/>)}
         {loginUser && (<NavLink to="/todo" className="opacity-80 hover:opacity-100">Calendar</NavLink>)}
         {!loginUser && (<NavLink to="/register" >Register</NavLink>)}
