@@ -11,10 +11,10 @@ export default function Hero(){
       transition={{ duration: 0.5 }}   // Animation duration
     >
                 <div className="">
-                    <h1 className="font-extrabold text-6xl text-center">Organize your life with <br></br><span className="text-blue-700">ToDoList</span></h1>
+                    <h1 className="font-extrabold text-5xl md:text-6xl text-center">Organize your life with <br></br><span className="text-blue-700">ToDoList</span></h1>
                 </div>
                 <div className="text-center">
-                    <p className="text-lg text-gray-500">The simplest and most efficient way to manage your daily tasks. <br></br>Increase your productivity and never forget what's important again.</p>
+                    <p className="text-md md:text-lg text-gray-500">The simplest and most efficient way to manage your daily tasks. <br></br>Increase your productivity and never forget what's important again.</p>
                 </div>
                 <div className="w-full flex gap-5 justify-center">
                     <NavLink className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 text-center" to="/register">

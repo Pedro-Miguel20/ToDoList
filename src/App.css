@@ -1,7 +1,6 @@
-@import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 
 @font-face {
@@ -72,13 +71,9 @@
   .ant-picker-datetime-panel{
     flex-direction: column;
   }
-
-  .ant-picker-content{
-    height: 150px !important;
-  }
 }
 
-.ant-modal-mask, .ant-modal-wrap{
+.ant-modal-mask, .ant-modal-wrap, .ant-popover{
   z-index: 1000 !important;
 }
 
